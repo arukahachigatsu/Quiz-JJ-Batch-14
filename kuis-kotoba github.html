@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Kuis Kotoba</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+:root{--bg:#0F172A;--card:#1E293B;--line:#334155;--ink:#FFFFFF;--mute:#CBD5E1;--acc:#60A5FA;--ok:#34D399;--bad:#F87171;
+--accsoft:rgba(96,165,250,.16);--oksoft:rgba(52,211,153,.14);--badsoft:rgba(248,113,113,.14);
+--c1:#60A5FA;--c2:#34D399;--c3:#A78BFA;--c4:#F59E0B;--c5:#FBBF24;--c6:#F87171;--c7:#22D3EE;
+--font:"Noto Sans JP","Hiragino Sans","Yu Gothic","Segoe UI",system-ui,sans-serif;
+color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.6;-webkit-tap-highlight-color:transparent}
+main{max-width:520px;margin:0 auto;padding:20px 18px 40px}
+h1{font-size:28px;font-weight:700;margin:8px 0 4px;letter-spacing:.02em}
+.sub{color:var(--mute);margin:0 0 22px;font-size:15px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+ruby{ruby-position:over}
+rt{font-size:.42em;font-weight:500;color:var(--mute);letter-spacing:.02em}
+.dcard{background:var(--card);border:1.5px solid var(--line);border-radius:28px;padding:16px;margin-bottom:12px}
+.dbtn{width:100%;text-align:left;background:var(--bg);border:1.5px solid var(--line);border-radius:20px;padding:20px 22px}
+.dbtn b{display:block;font-size:20px;font-weight:700}
+.dbtn small{color:var(--mute);font-size:14px}
+.dcard .dbtn+.dbtn{margin-top:12px}
+.dbtn.gk{text-align:center;padding:16px}.dbtn.gk b{font-size:16px;font-weight:500}
+.ctr{text-align:center;font-size:26px;margin:8px 0 18px}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:18px}
+.top h2{flex:1;margin:0;font-size:20px;font-weight:700}
+.back{width:44px;height:44px;border-radius:50%;background:var(--card);border:1.5px solid var(--line);display:grid;place-items:center;color:var(--acc);padding:0;flex:none}
+.back:active{transform:scale(.93)}
+.cats{display:grid;gap:10px}
+.cat{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:14px 16px}
+.cat:active{transform:scale(.99)}
+.cat .k{font-size:24px;font-weight:700;width:46px;height:46px;border-radius:12px;background:var(--accsoft);background:color-mix(in srgb,var(--tf,var(--acc)) 16%,transparent);color:var(--tf,var(--acc));display:grid;place-items:center;flex:none}
+.cat b{display:block;font-size:17px;font-weight:700}
+.cat small{color:var(--mute);font-size:14px}
+.cat .best{margin-left:auto;font-size:14px;color:var(--ok);font-weight:700;white-space:nowrap}
+.mix{background:linear-gradient(135deg,#60A5FA,#7AB4FB);border-color:#60A5FA;color:#0F172A;margin-bottom:14px}
+.mix .k{background:rgba(15,23,42,.14);color:#0F172A}
+.mix small,.mix .best{color:rgba(15,23,42,.8)}
+.cnt{font-size:14px;color:var(--mute);min-width:44px;text-align:right}
+.bar{flex:1;height:8px;background:var(--line);border-radius:8px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--acc);border-radius:8px;transition:width .35s}
+.q{background:var(--card);border:1.5px solid var(--line);border-radius:22px;padding:28px 18px;text-align:center;margin-bottom:16px}
+.q .lab{color:var(--mute);font-size:14px;margin-bottom:10px}
+.q .w{font-size:46px;font-weight:700;line-height:1.5;word-break:keep-all}
+.q .w.id{font-size:30px;line-height:1.3}
+.q .r{min-height:26px;color:var(--acc);font-size:16px;margin-top:8px;opacity:0;transition:opacity .25s}
+.q .r.on{opacity:1}
+.opts{display:grid;gap:10px}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;width:100%;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px 16px;font-size:17px;min-height:56px}
+.opt .n{width:26px;height:26px;border-radius:8px;background:var(--accsoft);color:var(--acc);font-size:14px;font-weight:700;display:grid;place-items:center;flex:none}
+.opt.jp{font-size:28px;font-weight:500;line-height:1.7;padding:14px 16px;min-height:76px}.opt.jp rt{font-size:.44em}
+.opt.ok{background:var(--oksoft);border-color:var(--ok)}
+.opt.bad{background:var(--badsoft);border-color:var(--bad);animation:sh .3s}
+.opt:disabled{cursor:default}
+.opt:disabled:not(.ok):not(.bad){opacity:.55}
+@keyframes sh{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.opt.hj{font-size:19px;min-height:56px;line-height:1.6;padding:12px 16px;font-weight:500}
+.dlg{text-align:left;margin-top:2px}
+.dr{display:flex;align-items:center;gap:16px;margin:16px 0}.dr.sr{flex-direction:row-reverse}
+.av{width:72px;height:83px;flex:none}
+.bub{--bg:#334155;position:relative;flex:1;min-width:0;padding:8px 16px;font-size:19px;line-height:2.1;background:var(--bg);color:#fff;border-radius:3px}
+.dr.sr .bub{--bg:#453645}
+.bub::before{content:"";position:absolute;top:50%;transform:translateY(-50%);border:10px solid transparent}
+.dr.sl .bub::before{left:-10px;border-width:10px 10px 10px 0;border-right-color:var(--bg)}
+.dr.sr .bub::before{right:-10px;border-width:10px 0 10px 10px;border-left-color:var(--bg)}
+.bub rt{color:#CBD5E1}
+.q.hyq{padding:18px 12px 12px}
+.blank{display:inline-block;min-width:4.6em;border-bottom:2px solid #fff;text-align:center;color:transparent;margin:0 4px}
+.fill{color:var(--ok)}
+.ex{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;margin:12px 0 14px;font-size:15px;line-height:1.75}
+.ex b{color:var(--ok);font-size:16px}.ex p{margin:8px 0 0;color:var(--mute)}
+.fb{min-height:28px;margin:14px 2px 6px;font-weight:700;font-size:15px}.fb ruby{font-size:1.5em}
+.fb.ok{color:var(--ok)}.fb.bad{color:var(--bad)}
+.go,.pri{width:100%;background:var(--acc);color:#0F172A;border:0;border-radius:14px;padding:15px;font-size:16px;font-weight:700}
+.go{visibility:hidden}.go.on{visibility:visible}
+.score{text-align:center;padding:26px 10px 6px}
+.score .big{font-size:72px;font-weight:700;color:var(--acc);line-height:1}
+.score .big span{font-size:32px;color:var(--mute)}
+.score p{color:var(--mute);margin:10px 0 0}
+.wrong{background:var(--card);border:1.5px solid var(--line);border-radius:16px;margin:20px 0;padding:6px 16px}
+.wrong h2{font-size:16px;margin:12px 0 4px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
+.row:first-of-type{border-top:0}
+.row .j{font-size:20px;font-weight:700;line-height:1.7}
+.row .j small{font-weight:400;color:var(--mute);font-size:13px;margin-left:6px}
+.row>span:last-child{text-align:right;color:var(--mute);font-size:15px}
+.btns{display:grid;gap:10px}
+.sec{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:14px;font-weight:700;font-size:16px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ===== Auth & Fukushu ===== */
+.inp{display:block;width:100%;background:var(--bg);color:var(--ink);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px;font:inherit;font-size:16px;margin-bottom:10px}
+.inp:focus{outline:3px solid var(--acc);outline-offset:1px;border-color:var(--acc)}
+.aerr{min-height:22px;margin:0 2px 8px;color:var(--bad);font-size:14px;font-weight:700}
+.arow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.arow .dbtn{margin:0}
+.dbtn.pri{background:var(--acc);border-color:var(--acc);color:#0F172A}
+.dbtn:disabled{opacity:.55;cursor:default}
+.ubar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:6px;font-size:14px;color:var(--mute)}
+.ubar span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lnk{background:none;border:0;color:var(--acc);font-size:14px;font-weight:700;padding:8px 0;flex:none}
+.bkt{display:inline-flex;align-items:center;gap:6px;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;font-size:15px;font-weight:500;color:var(--acc);margin-bottom:16px}
+.bkt:active{transform:scale(.97)}
+.fgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.fcard{display:block;width:100%;text-align:left;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px;font-size:15px;line-height:1.45}
+.fcard:active{transform:scale(.98)}
+.fcard b{display:block;font-size:15px;font-weight:700;margin-bottom:4px}
+.fcard small{display:block;font-size:13px;color:var(--mute)}
+.fcard.done{border-color:var(--ok)}
+.fcard.done small{color:var(--ok);font-weight:700}
+.msg{text-align:center;color:var(--mute);padding:28px 8px}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+const D={kk:{k:'動',n:'Kata kerja'},ki:{k:'い',n:'Kata sifat-i'},kn:{k:'な',n:'Kata sifat-na'},ks:{k:'接',n:'Kata sambung'},kt:{k:'副',n:'Kata keterangan'},kb:{k:'名',n:'Kata benda'}};
+/* Furigana: tulis kanji{bacaan}; hanya kanji yang diberi furigana */
+const DAYS={"2026-09-29":{"kk":"食{た}べる|makan;行{い}く|pergi;見{み}る|melihat;話{はな}す|berbicara;買{か}う|membeli","ki":"大{おお}きい|besar;美味{おい}しい|enak;高{たか}い|mahal / tinggi;楽{たの}しい|menyenangkan;忙{いそが}しい|sibuk","kn":"好{す}き|suka;元気{げんき}|sehat / bersemangat;静{しず}か|tenang;便利{べんり}|praktis;大丈夫{だいじょうぶ}|tidak apa-apa / baik-baik saja","ks":"そして|dan / kemudian;でも|tetapi;だから|oleh karena itu;それから|setelah itu;または|atau","kt":"とても|sangat;もう|sudah;まだ|masih / belum;よく|sering / dengan baik;ちょっと|sedikit","kb":"水{みず}|air;友達{ともだち}|teman;今日{きょう}|hari ini;仕事{しごと}|pekerjaan;家{いえ}|rumah"},
+"2026-09-30":{"kk":"飲{の}む|minum;書{か}く|menulis;帰{かえ}る|pulang;会{あ}う|bertemu;起{お}きる|bangun tidur","ki":"新{あたら}しい|baru;古{ふる}い|lama / tua (untuk benda);良{よ}い|baik;悪{わる}い|buruk;長{なが}い|panjang","kn":"嫌{きら}い|tidak suka;上手{じょうず}|pandai / mahir;下手{へた}|kurang pandai;暇{ひま}|senggang;親切{しんせつ}|ramah dan suka menolong","ks":"しかし|namun;それで|jadi / oleh sebab itu;ですから|karena itu (bentuk sopan);それに|selain itu;ところで|ngomong-ngomong","kt":"すぐ|segera;ゆっくり|perlahan-lahan;一緒{いっしょ}に|bersama-sama;時々{ときどき}|kadang-kadang;大抵{たいてい}|biasanya","kb":"本{ほん}|buku;学校{がっこう}|sekolah;犬{いぬ}|anjing;猫{ねこ}|kucing;魚{さかな}|ikan"},
+"2026-10-01":{"kk":"読{よ}む|membaca;寝{ね}る|tidur;開{あ}ける|membuka;閉{し}める|menutup;歩{ある}く|berjalan kaki","ki":"短{みじか}い|pendek;重{おも}い|berat;軽{かる}い|ringan;暑{あつ}い|panas (cuaca);寒{さむ}い|dingin (cuaca)","kn":"有名{ゆうめい}|terkenal;大切{たいせつ}|penting / berharga;大変{たいへん}|berat / repot;丈夫{じょうぶ}|kuat / tahan lama;新鮮{しんせん}|segar","ks":"じゃあ|baiklah kalau begitu;それでは|kalau begitu;それとも|atau (dalam pertanyaan);けれども|akan tetapi;だけど|tetapi (bentuk lisan)","kt":"いつも|selalu;必{かなら}ず|pasti / tanpa gagal;多分{たぶん}|mungkin;きっと|hampir pasti;本当{ほんとう}に|sungguh","kb":"電車{でんしゃ}|kereta;時間{じかん}|waktu;肉{にく}|daging;野菜{やさい}|sayuran;果物{くだもの}|buah"},
+"2026-10-02":{"kk":"聞{き}く|mendengar;来{く}る|datang;走{はし}る|berlari;泳{およ}ぐ|berenang;歌{うた}う|bernyanyi;払{はら}う|membayar","ki":"安{やす}い|murah;冷{つめ}たい|dingin (benda);暖{あたた}かい|hangat;涼{すず}しい|sejuk;強{つよ}い|kuat","kn":"危険{きけん}|berisiko;安全{あんぜん}|aman;自由{じゆう}|bebas;特別{とくべつ}|istimewa;必要{ひつよう}|perlu","ks":"例{たと}えば|misalnya;ですが|namun (bentuk sopan);また|lagi pula / juga","kt":"一番{いちばん}|paling;もっと|lebih (banyak);一度{いちど}|satu kali;特{とく}に|terutama;初{はじ}めて|untuk pertama kali","kb":"先生{せんせい}|guru;卵{たまご}|telur;ご飯{はん}|nasi;牛乳{ぎゅうにゅう}|susu;お茶{ちゃ}|teh;病気{びょうき}|penyakit"},
+"2026-10-03":{"kk":"待{ま}つ|menunggu;遊{あそ}ぶ|bermain;働{はたら}く|bekerja;休{やす}む|beristirahat;使{つか}う|menggunakan;掛{か}ける|menelepon / menggantung;降{ふ}る|turun (hujan / salju);止{と}まる|berhenti","ki":"小{ちい}さい|kecil;弱{よわ}い|lemah;速{はや}い|cepat (kecepatan);遅{おそ}い|lambat / terlambat;多{おお}い|banyak (jumlah)","kn":"綺麗{きれい}|indah / bersih;大好{だいす}き|sangat suka;立派{りっぱ}|megah / mengagumkan;不便{ふべん}|tidak praktis","kt":"全然{ぜんぜん}|sama sekali (bentuk negatif);早{はや}く|cepat / lebih awal;後{あと}で|nanti;先{さき}に|terlebih dahulu;実{じつ}は|sebenarnya","kb":"天気{てんき}|cuaca;朝{あさ}|pagi;昼{ひる}|siang;夜{よる}|malam;今年{ことし}|tahun ini;薬{くすり}|obat;熱{ねつ}|demam;予約{よやく}|reservasi"},
+"2026-10-04":{"kk":"作{つく}る|membuat;座{すわ}る|duduk;立{た}つ|berdiri;入{はい}る|masuk;出{で}る|keluar;曲{ま}がる|berbelok;渡{わた}る|menyeberang;通{かよ}う|pergi-pulang secara rutin","ki":"難{むずか}しい|sulit;少{すく}ない|sedikit (jumlah);広{ひろ}い|luas;狭{せま}い|sempit;近{ちか}い|dekat","kn":"簡単{かんたん}|mudah;真面目{まじめ}|rajin / serius;幸{しあわ}せ|bahagia;素敵{すてき}|menawan;賑{にぎ}やか|ramai","kt":"たくさん|banyak;やっと|akhirnya;ずっと|terus-menerus;急{きゅう}に|mendadak;はっきり|dengan jelas","kb":"名前{なまえ}|nama;駅{えき}|stasiun;道{みち}|jalan;町{まち}|kota kecil;国{くに}|negara;荷物{にもつ}|barang bawaan;切符{きっぷ}|tiket"},
+"2026-10-05":{"kk":"乗{の}る|naik (kendaraan);降{お}りる|turun (dari kendaraan);着{き}る|mengenakan pakaian;洗{あら}う|mencuci;教{おし}える|mengajar;急{いそ}ぐ|bergegas;間{ま}に合{あ}う|sempat / tepat waktu;遅{おく}れる|terlambat","ki":"遠{とお}い|jauh;明{あか}るい|terang / ceria;暗{くら}い|gelap;白{しろ}い|putih;黒{くろ}い|hitam","kn":"変{へん}|aneh;十分{じゅうぶん}|cukup / memadai;残念{ざんねん}|sayang sekali;楽{らく}|mudah / nyaman;無理{むり}|tidak mungkin","kt":"だんだん|lambat laun;大体{だいたい}|kira-kira;ほとんど|hampir semua;別{べつ}に|sebenarnya tidak (bentuk negatif)","kb":"店{みせ}|toko;病院{びょういん}|rumah sakit;銀行{ぎんこう}|bank;会社{かいしゃ}|perusahaan;部屋{へや}|kamar;財布{さいふ}|dompet;鍵{かぎ}|kunci;お金{かね}|uang"},
+"2026-10-06":{"kk":"習{なら}う|belajar (berguru);覚{おぼ}える|mengingat / menghafal;忘{わす}れる|lupa;思{おも}う|berpikir / merasa;知{し}る|mengetahui;頑張{がんば}る|berusaha keras;治{なお}る|sembuh","ki":"赤{あか}い|merah;青{あお}い|biru;甘{あま}い|manis;辛{から}い|pedas;面白{おもしろ}い|menarik / lucu","kn":"同{おな}じ|sama;色々{いろいろ}|bermacam-macam;正直{しょうじき}|jujur;熱心{ねっしん}|tekun / antusias;得意{とくい}|mahir / unggul","kt":"絶対{ぜったい}|pasti / mutlak;意外{いがい}と|ternyata;最近{さいきん}|akhir-akhir ini;もうすぐ|sebentar lagi;さっき|tadi","kb":"窓{まど}|jendela;机{つくえ}|meja;椅子{いす}|kursi;傘{かさ}|payung;鞄{かばん}|tas;値段{ねだん}|harga;給料{きゅうりょう}|gaji;会議{かいぎ}|rapat"},
+"2026-10-07":{"kk":"分{わ}かる|mengerti;言{い}う|mengatakan;呼{よ}ぶ|memanggil;貸{か}す|meminjamkan;借{か}りる|meminjam;疲{つか}れる|lelah;困{こま}る|kesulitan;変{か}わる|berubah","ki":"優{やさ}しい|baik hati;可愛{かわい}い|imut / menggemaskan;痛{いた}い|sakit;眠{ねむ}い|mengantuk;嬉{うれ}しい|senang","kn":"苦手{にがて}|kurang mahir;平気{へいき}|tenang / tidak masalah;普通{ふつう}|biasa;健康{けんこう}|sehat;心配{しんぱい}|khawatir","kt":"前{まえ}に|sebelumnya;一生懸命{いっしょうけんめい}|sekuat tenaga;ちょうど|tepat / pas;たった|hanya","kb":"靴{くつ}|sepatu;服{ふく}|pakaian;眼鏡{めがね}|kacamata;時計{とけい}|jam;電話{でんわ}|telepon;休{やす}み|libur / istirahat;台所{だいどころ}|dapur;冷蔵庫{れいぞうこ}|kulkas"},
+"2026-10-08":{"kk":"持{も}つ|membawa / memegang;取{と}る|mengambil;置{お}く|meletakkan;切{き}る|memotong;送{おく}る|mengirim;続{つづ}ける|melanjutkan;決{き}める|memutuskan;調{しら}べる|memeriksa / mencari tahu;考{かんが}える|memikirkan","ki":"悲{かな}しい|sedih;欲{ほ}しい|ingin memiliki;若{わか}い|muda;細{ほそ}い|ramping / tipis;太{ふと}い|tebal / gemuk","kn":"丁寧{ていねい}|sopan / teliti;派手{はで}|mencolok;地味{じみ}|sederhana;邪魔{じゃま}|mengganggu","kt":"しっかり|dengan teguh;少{すこ}し|sedikit (jumlah kecil);全部{ぜんぶ}|seluruhnya;今{いま}|sekarang","kb":"車{くるま}|mobil;自転車{じてんしゃ}|sepeda;飛行機{ひこうき}|pesawat;空{そら}|langit;山{やま}|gunung;洗濯{せんたく}|cucian;掃除{そうじ}|bersih-bersih;買{か}い物{もの}|belanja"},
+"2026-10-09":{"kk":"売{う}る|menjual;住{す}む|tinggal;選{えら}ぶ|memilih;探{さが}す|mencari;見{み}せる|menunjukkan;答{こた}える|menjawab;消{け}す|mematikan / menghapus;付{つ}ける|menyalakan / menempelkan","ki":"汚{きたな}い|kotor;危{あぶ}ない|berbahaya;怖{こわ}い|menakutkan;黄色{きいろ}い|kuning;うるさい|berisik","kn":"迷惑{めいわく}|menyusahkan orang lain;確{たし}か|pasti / benar;大事{だいじ}|perlu dijaga;無駄{むだ}|sia-sia;適当{てきとう}|cocok / seadanya","kt":"突然{とつぜん}|tiba-tiba;一人{ひとり}で|sendirian;毎日{まいにち}|setiap hari;毎朝{まいあさ}|setiap pagi","kb":"海{うみ}|laut;川{かわ}|sungai;花{はな}|bunga;雨{あめ}|hujan;雪{ゆき}|salju;郵便局{ゆうびんきょく}|kantor pos;図書館{としょかん}|perpustakaan;公園{こうえん}|taman"},
+"2026-10-10":{"kk":"笑{わら}う|tertawa;泣{な}く|menangis;始{はじ}める|memulai;終{お}わる|selesai;手伝{てつだ}う|membantu;並{なら}ぶ|mengantre;返{かえ}す|mengembalikan;捨{す}てる|membuang;片付{かたづ}ける|membereskan;運{はこ}ぶ|membawa / mengangkut","ki":"熱{あつ}い|panas (benda);苦{にが}い|pahit;柔{やわ}らかい|lembut / empuk;硬{かた}い|keras","kn":"不安{ふあん}|cemas","kt":"毎晩{まいばん}|setiap malam;毎週{まいしゅう}|setiap minggu;昨日{きのう}|kemarin;明日{あした}|besok;今度{こんど}|lain kali","kb":"顔{かお}|wajah;手{て}|tangan;家族{かぞく}|keluarga;子供{こども}|anak;写真{しゃしん}|foto;空港{くうこう}|bandara;信号{しんごう}|lampu lalu lintas;住所{じゅうしょ}|alamat;番号{ばんごう}|nomor;予定{よてい}|rencana / jadwal"},
+"2026-10-11":{"ki":"正{ただ}しい|benar;寂{さび}しい|kesepian;恥{は}ずかしい|malu;すごい|hebat / luar biasa;ひどい|kejam / parah","kn":"面倒{めんどう}|merepotkan (sulit dikerjakan);急{きゅう}|genting / mendadak","kt":"あまり|tidak terlalu (bentuk negatif);かなり|cukup / lumayan;ぜひ|harus / sangat ingin;まず|pertama-tama;もちろん|tentu saja","kk":"する|melakukan;やる|mengerjakan;ある|ada (benda);いる|ada (makhluk hidup);なる|menjadi;できる|bisa;くれる|memberi (kepada saya);あげる|memberi;もらう|menerima","kb":"父{ちち}|ayah (saya);母{はは}|ibu (saya);兄{あに}|kakak laki-laki (saya);姉{あね}|kakak perempuan (saya);弟{おとうと}|adik laki-laki (saya);妹{いもうと}|adik perempuan (saya);客{きゃく}|tamu / pelanggan;社長{しゃちょう}|direktur;医者{いしゃ}|dokter"},
+"2026-10-12":{"ki":"詳{くわ}しい|terperinci / paham betul;薄{うす}い|tipis / encer;厚{あつ}い|tebal;珍{めずら}しい|langka / jarang;濃{こ}い|pekat","kt":"なるべく|sebisa mungkin;ちゃんと|dengan benar / rapi;すっかり|sepenuhnya;ずいぶん|jauh lebih;とにかく|pokoknya","kk":"生{う}まれる|lahir;かかる|memerlukan (waktu / biaya);乗{の}り換{か}える|berpindah kendaraan;着{つ}く|tiba;寄{よ}る|mampir;迎{むか}える|menjemput;見送{みおく}る|mengantar kepergian;連{つ}れる|membawa (orang);起{お}こす|membangunkan;入{い}れる|memasukkan","kb":"店員{てんいん}|pegawai toko;隣{となり}|sebelah;同僚{どうりょう}|rekan kerja;教室{きょうしつ}|ruang kelas;トイレ|toilet;玄関{げんかん}|pintu masuk rumah;階段{かいだん}|tangga;入口{いりぐち}|pintu masuk;出口{でぐち}|pintu keluar;受付{うけつけ}|resepsionis / pendaftaran"},
+"2026-10-13":{"kt":"そろそろ|sudah hampir waktunya;たまに|sesekali;早{はや}めに|lebih awal dari jadwal;いつか|suatu hari nanti;ちっとも|sedikit pun tidak","kk":"出{だ}す|mengeluarkan / mengumpulkan;押{お}す|menekan / mendorong;引{ひ}く|menarik;拭{ふ}く|mengelap;焼{や}く|memanggang;煮{に}る|merebus (dengan bumbu);炒{いた}める|menumis;温{あたた}める|menghangatkan;冷{ひ}やす|mendinginkan;沸{わ}かす|mendidihkan;磨{みが}く|menggosok / menyikat;浴{あ}びる|mandi (shower);脱{ぬ}ぐ|melepas pakaian","kb":"市役所{しやくしょ}|kantor pemerintah kota;交番{こうばん}|pos polisi;薬局{やっきょく}|apotek;スーパー|supermarket;コンビニ|minimarket;地下鉄{ちかてつ}|kereta bawah tanah;交差点{こうさてん}|persimpangan;橋{はし}|jembatan;事務所{じむしょ}|kantor;携帯{けいたい}|ponsel;電気{でんき}|listrik / lampu;電池{でんち}|baterai"},
+"2026-10-14":{"kk":"履{は}く|memakai (sepatu / celana);被{かぶ}る|memakai (topi);乾{かわ}く|mengering;聞{き}こえる|terdengar;見{み}える|terlihat;似{に}る|mirip;違{ちが}う|berbeda / salah;合{あ}う|cocok / pas;足{た}りる|mencukupi;増{ふ}える|bertambah;減{へ}る|berkurang;壊{こわ}れる|rusak;落{お}ちる|jatuh;落{お}とす|menjatuhkan;無{な}くす|menghilangkan","kb":"帽子{ぼうし}|topi;靴下{くつした}|kaus kaki;歯{は}|gigi;髪{かみ}|rambut;風邪{かぜ}|masuk angin / flu;咳{せき}|batuk;保険証{ほけんしょう}|kartu asuransi kesehatan;今朝{けさ}|pagi ini;今晩{こんばん}|malam ini;先週{せんしゅう}|minggu lalu;来週{らいしゅう}|minggu depan;来月{らいげつ}|bulan depan;週末{しゅうまつ}|akhir pekan;午前{ごぜん}|sebelum tengah hari;午後{ごご}|setelah tengah hari"},
+"2026-10-15":{"kk":"無{な}くなる|habis / hilang;閉{し}まる|tertutup;開{あ}く|terbuka;始{はじ}まる|dimulai;集{あつ}める|mengumpulkan;知{し}らせる|memberi tahu;頼{たの}む|meminta / memesan;断{ことわ}る|menolak;謝{あやま}る|meminta maaf;誘{さそ}う|mengajak;戻{もど}る|kembali;続{つづ}く|berlanjut;直{なお}す|memperbaiki;泊{と}まる|menginap;貼{は}る|menempel","kb":"誕生日{たんじょうび}|hari ulang tahun;夕方{ゆうがた}|sore menjelang malam;書類{しょるい}|dokumen;メール|surel;残業{ざんぎょう}|lembur;出張{しゅっちょう}|perjalanan dinas;朝{あさ}ご飯{はん}|sarapan;昼{ひる}ご飯{はん}|makan siang;晩{ばん}ご飯{はん}|makan malam;弁当{べんとう}|bekal makanan;米{こめ}|beras;パン|roti;塩{しお}|garam;砂糖{さとう}|gula;飲{の}み物{もの}|minuman"},
+"2026-10-16":{"kk":"覚{さ}める|terbangun;眠{ねむ}る|tertidur;着替{きが}える|berganti pakaian;出掛{でか}ける|pergi keluar;向{む}かう|menuju;通{とお}る|melewati;過{す}ぎる|melewati / terlalu;進{すす}む|maju;飛{と}ぶ|terbang;止{と}める|menghentikan / memarkir;回{まわ}る|berputar / berkeliling;話{はな}し合{あ}う|berdiskusi;伝{つた}える|menyampaikan;教{おそ}わる|diajari;測{はか}る|mengukur","kb":"禁煙{きんえん}エリア|area dilarang merokok;喫煙{きつえん}エリア|area boleh merokok;自動販売機{じどうはんばいき}|mesin penjual otomatis;身分証明書{みぶんしょうめいしょ}|kartu identitas;横断歩道{おうだんほどう}|penyeberangan zebra cross;布団{ふとん}|kasur lipat;頭{あたま}|kepala;鼻{はな}|hidung;首{くび}|leher;肩{かた}|bahu;腕{うで}|lengan;足{あし}|kaki;お腹{なか}|perut;背中{せなか}|punggung;体{からだ}|tubuh"},
+"2026-10-17":{"kk":"数{かぞ}える|menghitung;比{くら}べる|membandingkan;申{もう}し込{こ}む|mendaftar;受{う}け取{と}る|menerima (barang);届{とど}く|sampai;届{とど}ける|mengantarkan;預{あず}ける|menitipkan;稼{かせ}ぐ|mencari uang;貯{た}める|menabung;試{ため}す|mencoba;似合{にあ}う|cocok (dipakai);包{つつ}む|membungkus;並{なら}べる|menyusun berjajar;飾{かざ}る|menghias;育{そだ}てる|membesarkan / merawat","kb":"喉{のど}|tenggorokan;怪我{けが}|luka / cedera;注射{ちゅうしゃ}|suntikan;検査{けんさ}|pemeriksaan medis;診察{しんさつ}|konsultasi dokter;入院{にゅういん}|rawat inap;歯医者{はいしゃ}|dokter gigi;体温{たいおん}|suhu tubuh;洗面所{せんめんじょ}|tempat cuci muka;ゴミ|sampah;電子{でんし}レンジ|oven microwave;洗濯機{せんたくき}|mesin cuci;掃除機{そうじき}|penyedot debu;石鹸{せっけん}|sabun;タオル|handuk"},
+"2026-10-18":{"kk":"楽{たの}しむ|menikmati;喜{よろこ}ぶ|bergembira;驚{おどろ}く|terkejut;怒{おこ}る|marah;叱{しか}る|memarahi;褒{ほ}める|memuji;信{しん}じる|percaya;迷{まよ}う|bingung / tersesat;慣{な}れる|terbiasa;諦{あきら}める|menyerah;願{ねが}う|berharap / memohon;間違{まちが}える|salah / keliru;勝{か}つ|menang;負{ま}ける|kalah;当{あ}たる|terkena / tepat sasaran","kb":"歯{は}ブラシ|sikat gigi;鏡{かがみ}|cermin;棚{たな}|rak;壁{かべ}|dinding;床{ゆか}|lantai;庭{にわ}|halaman;家賃{やちん}|uang sewa rumah;引{ひ}っ越{こ}し|pindah rumah;袋{ふくろ}|kantong;レジ|kasir;領収書{りょうしゅうしょ}|kuitansi;割引{わりびき}|diskon;税金{ぜいきん}|pajak;現金{げんきん}|uang tunai;通帳{つうちょう}|buku tabungan"},
+"2026-10-19":{"kk":"思{おも}い出{だ}す|teringat;気付{きづ}く|menyadari;診{み}る|memeriksa (dokter);塗{ぬ}る|mengoleskan;冷{ひ}える|menjadi dingin;倒{たお}れる|roboh / pingsan;転{ころ}ぶ|terjatuh;咲{さ}く|mekar;吹{ふ}く|bertiup / meniup;鳴{な}る|berbunyi;守{まも}る|menaati / menjaga;動{うご}く|bergerak / berfungsi;光{ひか}る|bersinar;曇{くも}る|berawan;晴{は}れる|cerah","kb":"電気代{でんきだい}|tagihan listrik;料金{りょうきん}|biaya / tarif;無料{むりょう}|gratis;商品{しょうひん}|barang dagangan;おつり|uang kembalian;運転{うんてん}|mengemudi;免許{めんきょ}|surat izin mengemudi;駐車場{ちゅうしゃじょう}|tempat parkir;改札{かいさつ}|gerbang tiket;時刻表{じこくひょう}|jadwal keberangkatan;遅刻{ちこく}|keterlambatan;事故{じこ}|kecelakaan;道路{どうろ}|jalan raya;右{みぎ}|kanan;左{ひだり}|kiri"},
+"2026-10-20":{"kk":"混{ま}ぜる|mencampur;混{こ}む|ramai / padat;空{す}く|menjadi lengang;増{ふ}やす|menambah;減{へ}らす|mengurangi;広{ひろ}げる|membentangkan;畳{たた}む|melipat;干{ほ}す|menjemur;割{わ}る|memecahkan / membelah;折{お}る|melipat / mematahkan;建{た}てる|mendirikan;生{い}きる|hidup;繰{く}り返{かえ}す|mengulang;慌{あわ}てる|panik / terburu-buru;落{お}ち着{つ}く|menjadi tenang","kb":"角{かど}|sudut / tikungan;近所{きんじょ}|lingkungan sekitar;資料{しりょう}|bahan rujukan;締{し}め切{き}り|tenggat waktu;打{う}ち合{あ}わせ|pertemuan pembahasan;面接{めんせつ}|wawancara;履歴書{りれきしょ}|riwayat hidup (CV);名刺{めいし}|kartu nama;上司{じょうし}|atasan;部長{ぶちょう}|kepala bagian;制服{せいふく}|seragam;休憩{きゅうけい}|istirahat sejenak;連絡{れんらく}|kabar / kontak;返事{へんじ}|balasan;意見{いけん}|pendapat"},
+"2026-10-21":{"kk":"検索{けんさく}する|mencari (daring);メモする|mencatat;掃{は}く|menyapu;応援{おうえん}する|mendukung;提出{ていしゅつ}する|mengumpulkan (dokumen / tugas);話{はな}しかける|menyapa;追{お}い越{こ}す|menyalip;縮{ちぢ}む|menyusut;温{あたた}まる|menjadi hangat;記入{きにゅう}する|mengisi (formulir);渡{わた}す|memberikan langsung;済{す}む|beres / selesai (urusan);助{たす}ける|menolong;頼{たよ}る|mengandalkan;別{わか}れる|berpisah","kb":"シャツ|kemeja;パソコン|komputer;期限{きげん}|batas waktu;兄弟{きょうだい}|saudara kandung;スープ|sup;習慣{しゅうかん}|kebiasaan;高校{こうこう}|sekolah menengah atas;両親{りょうしん}|orang tua;来年{らいねん}|tahun depan;学生{がくせい}|pelajar / mahasiswa;授業{じゅぎょう}|pelajaran di kelas;星{ほし}|bintang;意味{いみ}|arti;手紙{てがみ}|surat;予算{よさん}|anggaran"},
+"2026-10-22":{"kk":"蒸{む}す|mengukus;濡{ぬ}らす|membasahi;約束{やくそく}する|berjanji;感謝{かんしゃ}する|berterima kasih;気{き}に入{い}る|menyukai;変更{へんこう}する|mengubah (jadwal / rencana);登{のぼ}る|mendaki;冷{さ}ます|mendinginkan (makanan panas);寝坊{ねぼう}する|bangun kesiangan;乾{かわ}かす|mengeringkan;確認{かくにん}する|memastikan;上{あ}げる|menaikkan / memberi;伸{の}びる|memanjang;差{さ}す|membuka (payung);返信{へんしん}する|membalas pesan","kb":"火曜日{かようび}|hari Selasa;去年{きょねん}|tahun lalu;サラダ|salad;鍋{なべ}|panci;試験{しけん}|ujian;ノート|buku catatan;店長{てんちょう}|manajer toko;地震{じしん}|gempa bumi;台風{たいふう}|topan;コーヒー|kopi;皿{さら}|piring;りんご|apel;市場{いちば}|pasar;鶏肉{とりにく}|daging ayam;留学生{りゅうがくせい}|pelajar asing"},
+"2026-10-23":{"kk":"汚{よご}れる|menjadi kotor;溶{と}かす|melarutkan;汚{よご}す|mengotori;説明{せつめい}する|menjelaskan;見{み}つかる|ditemukan;紹介{しょうかい}する|memperkenalkan;乾杯{かんぱい}する|bersulang;練習{れんしゅう}する|berlatih;変{か}える|mengubah;下{お}ろす|menarik uang (bank);コピーする|menyalin (fotokopi);出席{しゅっせき}する|hadir;見物{けんぶつ}する|bertamasya / menonton;降{お}ろす|menurunkan (barang / penumpang);流{なが}す|mengalirkan / menyiram","kb":"茶碗{ちゃわん}|mangkuk nasi;ジュース|jus;うどん|udon;木{き}|pohon;引{ひ}き出{だ}し|laci;紅茶{こうちゃ}|teh hitam;カレー|kari;大学{だいがく}|universitas;ネクタイ|dasi;大根{だいこん}|lobak;趣味{しゅみ}|hobi;先月{せんげつ}|bulan lalu;秋{あき}|musim gugur;火事{かじ}|kebakaran;寿司{すし}|sushi"},
+"2026-10-24":{"kk":"乗{の}り遅{おく}れる|ketinggalan kendaraan;決{き}まる|ditentukan;予習{よしゅう}する|belajar sebelum pelajaran;成功{せいこう}する|berhasil;浮{う}かぶ|mengapung;預{あず}かる|menerima titipan;沸{わ}く|mendidih;注{そそ}ぐ|menuang;質問{しつもん}する|bertanya;引{ひ}き受{う}ける|menerima tugas;書{か}き直{なお}す|menulis ulang;節約{せつやく}する|berhemat;下{さ}がる|menurun (posisi / nilai);治{なお}す|menyembuhkan;見直{みなお}す|meninjau ulang","kb":"息子{むすこ}|anak laki-laki;ペン|pena;理由{りゆう}|alasan;外国人{がいこくじん}|orang asing;博物館{はくぶつかん}|museum;スプーン|sendok;玉{たま}ねぎ|bawang bombai;声{こえ}|suara;宿題{しゅくだい}|pekerjaan rumah;サイズ|ukuran;箸{はし}|sumpit;日本人{にほんじん}|orang Jepang;包丁{ほうちょう}|pisau dapur;ラーメン|ramen;日曜日{にちようび}|hari Minggu"},
+"2026-10-25":{"kk":"流{なが}れる|mengalir;痛{いた}む|terasa sakit;刻{きざ}む|mencincang;任{まか}せる|mempercayakan;回{まわ}す|memutar;破{やぶ}れる|sobek;茹{ゆ}でる|merebus (dengan air saja);祝{いわ}う|merayakan;交換{こうかん}する|menukar;下{さ}げる|menurunkan (posisi / harga);契約{けいやく}する|membuat kontrak;入学{にゅうがく}する|masuk sekolah;太{ふと}る|menjadi gemuk;結{むす}ぶ|mengikat;消{き}える|padam / lenyap","kb":"旅館{りょかん}|penginapan tradisional;バス停{てい}|halte bus;風{かぜ}|angin;言葉{ことば}|kata / bahasa;セーター|sweter;ズボン|celana panjang;音楽{おんがく}|musik;鉛筆{えんぴつ}|pensil;平日{へいじつ}|hari kerja;休日{きゅうじつ}|hari libur;映画{えいが}|film;みかん|jeruk mandarin;太陽{たいよう}|matahari;冬{ふゆ}|musim dingin;売{う}り場{ば}|bagian penjualan"},
+"2026-10-26":{"kk":"参加{さんか}する|ikut serta;反対{はんたい}する|menentang;到着{とうちゃく}する|tiba (di tujuan);切{き}れる|putus / habis;拾{ひろ}う|memungut;替{か}える|mengganti;復習{ふくしゅう}する|mengulang pelajaran;失敗{しっぱい}する|gagal;招待{しょうたい}する|mengundang (resmi);発表{はっぴょう}する|mempresentasikan;安心{あんしん}する|merasa lega;絞{しぼ}る|memeras;食事{しょくじ}する|bersantap;散{ち}らかす|membuat berantakan;待{ま}たせる|membuat menunggu","kb":"お寺{てら}|kuil Buddha;夏{なつ}|musim panas;港{みなと}|pelabuhan;紙{かみ}|kertas;神社{じんじゃ}|kuil Shinto;刺身{さしみ}|sashimi;喫茶店{きっさてん}|kedai kopi;気温{きおん}|suhu udara;豆腐{とうふ}|tahu;地図{ちず}|peta;会社員{かいしゃいん}|karyawan perusahaan;将来{しょうらい}|masa depan;彼{かれ}|dia (laki-laki);トマト|tomat;水曜日{すいようび}|hari Rabu"},
+"2026-10-27":{"kk":"付{つ}く|menempel / menyala;通学{つうがく}する|pulang-pergi sekolah;足{た}す|menambahkan;折{お}れる|patah;巻{ま}く|melilit;用意{ようい}する|menyediakan;相談{そうだん}する|berkonsultasi;運動{うんどう}する|berolahraga;見学{けんがく}する|meninjau / studi lapangan;勉強{べんきょう}する|belajar;閉{と}じる|menutup (buku / mata);旅行{りょこう}する|bepergian / berwisata;打{う}つ|mengetik / memukul;解決{かいけつ}する|menyelesaikan masalah;経験{けいけん}する|mengalami","kb":"ベッド|tempat tidur;醤油{しょうゆ}|kecap asin;妻{つま}|istri;牛肉{ぎゅうにく}|daging sapi;半分{はんぶん}|setengah;箱{はこ}|kotak;ホテル|hotel;匂{にお}い|bau / aroma;運転手{うんてんしゅ}|sopir;後輩{こうはい}|junior;春{はる}|musim semi;テレビ|televisi;月曜日{げつようび}|hari Senin;夢{ゆめ}|mimpi;人参{にんじん}|wortel"},
+"2026-10-28":{"kk":"叫{さけ}ぶ|berteriak;出勤{しゅっきん}する|berangkat kerja;利用{りよう}する|memanfaatkan (layanan);引{ひ}き返{かえ}す|berbalik arah;剥{む}く|mengupas;案内{あんない}する|memandu;眺{なが}める|memandang;感{かん}じる|merasakan;期待{きたい}する|berharap;欠席{けっせき}する|tidak hadir;立{た}ち寄{よ}る|singgah;揺{ゆ}れる|bergoyang;賛成{さんせい}する|menyetujui;鳴{な}らす|membunyikan;沈{しず}む|tenggelam","kb":"最初{さいしょ}|awal / pertama;番組{ばんぐみ}|acara televisi;体育館{たいいくかん}|gedung olahraga;工場{こうじょう}|pabrik;金曜日{きんようび}|hari Jumat;土曜日{どようび}|hari Sabtu;エアコン|pendingin ruangan;夫{おっと}|suami;音{おと}|bunyi;手袋{てぶくろ}|sarung tangan;味噌汁{みそしる}|sup miso;目的{もくてき}|tujuan;味{あじ}|rasa;結果{けっか}|hasil;本屋{ほんや}|toko buku"},
+"2026-10-29":{"kk":"済{す}ませる|menyelesaikan;見{み}つめる|menatap;揚{あ}げる|menggoreng (banyak minyak);通勤{つうきん}する|pulang-pergi kerja;緊張{きんちょう}する|merasa tegang;育{そだ}つ|tumbuh;集合{しゅうごう}する|berkumpul;登録{とうろく}する|mendaftarkan;散歩{さんぽ}する|berjalan-jalan santai;換{か}える|menukar (uang);盛{も}る|menata (makanan);注意{ちゅうい}する|berhati-hati / memperingatkan;生活{せいかつ}する|menjalani kehidupan;招{まね}く|mengundang;濡{ぬ}れる|basah","kb":"美術館{びじゅつかん}|museum seni;彼女{かのじょ}|dia (perempuan);祖父{そふ}|kakek;会場{かいじょう}|tempat acara;カメラ|kamera;スカート|rok;空気{くうき}|udara;コップ|gelas;娘{むすめ}|anak perempuan;ケーキ|kue;ナイフ|pisau makan;祖母{そぼ}|nenek;食堂{しょくどう}|kedai makan;ドア|pintu;キャベツ|kubis"},
+"2026-10-30":{"kk":"付{つ}き合{あ}う|bergaul / berpacaran;準備{じゅんび}する|bersiap-siap;留学{りゅうがく}する|belajar di luar negeri;疑{うたが}う|meragukan;心配{しんぱい}する|merasa khawatir;卒業{そつぎょう}する|lulus (sekolah);出発{しゅっぱつ}する|berangkat;亡{な}くなる|meninggal;結婚{けっこん}する|menikah;合格{ごうかく}する|lulus ujian;悩{なや}む|bergumul / bingung;腫{は}れる|membengkak;注文{ちゅうもん}する|memesan;締{し}める|mengencangkan / memasang dasi;修理{しゅうり}する|memperbaiki (mesin)","kb":"バナナ|pisang;ハンカチ|saputangan;木曜日{もくようび}|hari Kamis;先輩{せんぱい}|senior;動物園{どうぶつえん}|kebun binatang;歌{うた}|lagu;豚肉{ぶたにく}|daging babi;辞書{じしょ}|kamus;新聞{しんぶん}|surat kabar;レストラン|restoran;油{あぶら}|minyak;答{こた}え|jawaban;正月{しょうがつ}|Tahun Baru;コート|mantel;フォーク|garpu"},
+"2026-10-31":{"kk":"我慢{がまん}する|menahan diri;焦{こ}げる|gosong;贈{おく}る|memberi hadiah;料理{りょうり}する|memasak;痩{や}せる|menjadi kurus;黙{だま}る|diam;支払{しはら}う|membayar (bentuk sopan);中止{ちゅうし}する|membatalkan;延期{えんき}する|menunda;上{あ}がる|naik;取{と}り替{か}える|menukar barang;覗{のぞ}く|mengintip;尋{たず}ねる|menanyakan;割{わ}れる|pecah;許{ゆる}す|memaafkan","kb":"味噌{みそ}|pasta miso;カーテン|tirai;月{つき}|bulan (di langit);美容院{びよういん}|salon kecantikan;今夜{こんや}|malam nanti;色{いろ}|warna;今月{こんげつ}|bulan ini;最後{さいご}|akhir / terakhir;看護師{かんごし}|perawat;マスク|masker;映画館{えいがかん}|bioskop;雲{くも}|awan;じゃがいも|kentang;お酒{さけ}|minuman beralkohol;ビール|bir"}};
+const KM=['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+const $=document.getElementById('app');
+const rb=t=>t.replace(/([\u4e00-\u9fff々]+)\{([^}]+)\}/g,'<ruby>$1<rt>$2</rt></ruby>');
+const plain=t=>t.replace(/\{[^}]*\}/g,'');
+const KIE='いきしちにひみりぎじぢびぴえけせてねへめれげぜでべぺ',GODAN=['帰る','入る','走る','知る','切る','減る','ある','気に入る'],MM={う:'い',く:'き',ぐ:'ぎ',す:'し',つ:'ち',ぬ:'に',ぶ:'び',む:'み'};
+function masu(t){const p=plain(t);if(p.endsWith('する'))return t.slice(0,-2)+'します';if(p==='来る')return'来{き}ます';const l=t.slice(-1),q=t.slice(0,-1);
+if(l==='る'){const v=q.slice(-1)==='}'?q.slice(-2,-1):q.slice(-1);return KIE.includes(v)&&!GODAN.includes(p)?q+'ます':q+'ります'}
+return q+MM[l]+'ます'}
+let best={};try{best=JSON.parse(localStorage.getItem('kotoba-best')||'{}')}catch(e){}
+const save=()=>{try{localStorage.setItem('kotoba-best',JSON.stringify(best))}catch(e){}};
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const fmt=k=>{const [y,m,d]=k.split('-').map(Number);return `${y}、${KM[m-1]}、${d}日`};
+const keys=Object.keys(DAYS).sort();
+const count=dk=>Object.values(DAYS[dk]).reduce((n,a)=>n+a.split(';').length,0);
+const F=t=>S&&S.mode==='uj'?plain(t):rb(t);
+const ARROW='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>';
+let S=null,day=null;
+
+/* ===== Firebase: ISI firebaseConfig ANDA DI SINI ===== */
+const firebaseConfig={
+apiKey:"AIzaSyB-UKoTn2y-5O8q33svtxr0V4C2sdZFBG4",
+authDomain:"kuis-kotoba-60b68.firebaseapp.com",
+projectId:"kuis-kotoba-60b68",
+storageBucket:"kuis-kotoba-60b68.firebasestorage.app",
+messagingSenderId:"728304633281",
+appId:"1:728304633281:web:5c508642ab6b32e2271b40"
+};
+const FB_OK=!String(firebaseConfig.apiKey).startsWith('ISI_')&&typeof firebase!=='undefined';
+let auth=null,db=null;
+if(FB_OK){firebase.initializeApp(firebaseConfig);auth=firebase.auth();db=firebase.firestore()}
+const uid=()=>auth&&auth.currentUser?auth.currentUser.uid:null;
+const dailyRef=(u,dk)=>db.collection('user_scores').doc(u).collection('daily').doc(dk);
+
+/* Simpan nilai harian: user_scores/{userId}/daily/{dateKey}. Hanya menimpa jika persentase lebih tinggi. */
+async function saveScore(dateKey,score,total){
+const u=uid();if(!u||!total)return false;
+try{
+const ref=dailyRef(u,dateKey);
+await db.runTransaction(async tx=>{
+const s=await tx.get(ref),o=s.exists?s.data():null;
+if(o&&o.total&&o.score/o.total>=score/total)return;
+tx.set(ref,{score,total,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
+});
+return true;
+}catch(e){console.error('saveScore gagal:',e);return false}
+}
+/* Ambil semua nilai user yang sedang login -> {dateKey:{score,total}} */
+async function getUserScores(){
+const u=uid();if(!u)return {};
+const snap=await db.collection('user_scores').doc(u).collection('daily').get();
+const o={};snap.forEach(d=>{o[d.id]=d.data()});return o;
+}
+
+const AERR={'auth/invalid-email':'Format email tidak valid.','auth/missing-password':'Kata sandi belum diisi.','auth/weak-password':'Kata sandi minimal 6 karakter.','auth/email-already-in-use':'Email sudah terdaftar. Silakan masuk.','auth/invalid-credential':'Email atau kata sandi salah.','auth/user-not-found':'Akun tidak ditemukan.','auth/wrong-password':'Email atau kata sandi salah.','auth/too-many-requests':'Terlalu banyak percobaan. Coba lagi nanti.','auth/network-request-failed':'Koneksi internet bermasalah.','auth/popup-closed-by-user':'Login Google dibatalkan.','auth/unauthorized-domain':'Domain belum diizinkan di Firebase (Authentication > Settings > Authorized domains).'};
+
+function authScreen(){
+S=null;day=null;
+$.innerHTML=`<h1>言葉クイズ</h1><p class="sub">Masuk agar nilai harian Anda tersimpan.</p><div class="dcard">
+<input class="inp" id="em" type="email" placeholder="Email" autocomplete="email" inputmode="email">
+<input class="inp" id="pw" type="password" placeholder="Kata sandi (min. 6 karakter)" autocomplete="current-password">
+<div class="aerr" id="ae" role="alert"></div>
+<div class="arow" style="margin-bottom:0"><button class="dbtn gk pri" id="li"><b>Masuk</b></button><button class="dbtn gk" id="rg"><b>Daftar</b></button></div></div>`;
+const ae=$.querySelector('#ae'),bs=$.querySelectorAll('button');
+const run=async f=>{ae.textContent='';bs.forEach(b=>b.disabled=true);try{await f()}catch(e){ae.textContent=AERR[e.code]||('Gagal: '+(e.message||e.code))}bs.forEach(b=>b.disabled=false)};
+const cred=()=>[$.querySelector('#em').value.trim(),$.querySelector('#pw').value];
+$.querySelector('#li').onclick=()=>run(()=>{const[e,p]=cred();return auth.signInWithEmailAndPassword(e,p)});
+$.querySelector('#rg').onclick=()=>run(()=>{const[e,p]=cred();return auth.createUserWithEmailAndPassword(e,p)});
+}
+
+function home(){
+S=null;day=null;
+const u=auth&&auth.currentUser,nm=u?(u.displayName||u.email||''):'';
+$.innerHTML=`<h1>言葉クイズ</h1><p class="sub">Pilih menu untuk memulai.</p>
+<div class="dcard"><button class="dbtn" id="fk"><b>Fukushu (復習)</b><small>Ulangi kosakata per tanggal dan lihat nilai Anda</small></button></div>
+<div class="ubar"><span>${nm.replace(/</g,'&lt;')}</span><button class="lnk" id="lo">Keluar</button></div>`;
+$.querySelector('#fk').onclick=fukushuMenu;
+$.querySelector('#lo').onclick=()=>auth.signOut();
+}
+
+async function fukushuMenu(){
+S=null;day=null;
+const top='<button class="bkt" id="bm">← Kembali ke Menu</button>';
+$.innerHTML=top+'<div class="msg">Memuat nilai…</div>';
+$.querySelector('#bm').onclick=home;
+let sc={},err=false;
+try{sc=await getUserScores()}catch(e){console.error(e);err=true}
+if(!document.getElementById('bm'))return; /* user sudah pindah halaman */
+let h=top+(err?'<div class="aerr">Gagal memuat nilai. Periksa koneksi atau aturan Firestore.</div>':'')+'<div class="fgrid">';
+keys.forEach(k=>{const s=sc[k];
+h+=`<button class="fcard${s?' done':''}" data-d="${k}"><b>${fmt(k)}</b><small>${s?`Nilai: ${s.score}/${s.total}`:'Belum dikerjakan'}</small></button>`});
+h+='</div>';
+$.innerHTML=h;
+$.querySelector('#bm').onclick=home;
+$.querySelectorAll('.fcard').forEach(b=>b.onclick=()=>dayMenu(b.dataset.d));
+}
+
+function dayMenu(dk){
+S=null;day=dk;
+const n=count(dk),cs=Object.keys(D).filter(c=>DAYS[dk][c]);
+let h=`<div class="top"><button class="back" aria-label="Kembali" id="bk">${ARROW}</button><h2>${fmt(dk)}</h2></div>`;
+const bm=Math.max(best[dk+':all:jr']||0,best[dk+':all:ri']||0,best[dk+':all:uj']||0);
+h+=`<button class="cat mix" data-c="all"><span class="k">全</span><span><b>Semua kategori</b><small>${n} kata, urutan acak</small></span>${bm?`<span class="best">${bm}/${n}</span>`:''}</button><div class="cats">`;
+cs.forEach(c=>{const m=DAYS[dk][c].split(';').length,x=Object.keys(D).indexOf(c)+1;h+=`<button class="cat" data-c="${c}"><span class="k" style="--tf:var(--c${x})">${D[c].k}</span><span><b>${D[c].n}</b><small>${D[c].rev?'Indonesia → Jepang':'Jepang → Indonesia'} · ${m} kata${c==='kk'?' · bentuk ます':''}</small></span>${best[dk+':'+c]!=null?`<span class="best">${best[dk+':'+c]}/${m}</span>`:''}</button>`});
+if(HY[dk]){const m=HY[dk].length;h+=`<button class="cat" data-c="hy"><span class="k" style="--tf:var(--c7)">表</span><span><b>Hyougen (Ungkapan)</b><small>Dialog rumpang · ${m} soal</small></span>${best[dk+':hy']!=null?`<span class="best">${best[dk+':hy']}/${m}</span>`:''}</button>`}
+h+='</div>';
+$.innerHTML=h;
+$.querySelector('#bk').onclick=fukushuMenu;
+$.querySelectorAll('.cat').forEach(b=>b.onclick=()=>b.dataset.c==='all'?modeMenu():b.dataset.c==='hy'?hyStart():start(b.dataset.c));
+}
+
+function modeMenu(){
+S=null;const n=count(day),kv=DAYS[day].kk.split(';').length,bs=m=>best[day+':all:'+m]!=null?` · skor terbaik ${best[day+':all:'+m]}/${m==='kd'?kv:n}`:'';
+$.innerHTML=`<h1 class="ctr">${fmt(day)}</h1><div class="dcard"><button class="dbtn" data-m="jr"><b>Jepang → Indonesia</b><small>Lihat kata Jepang, lalu pilih artinya${bs('jr')}</small></button><button class="dbtn" data-m="ri"><b>Indonesia → Jepang</b><small>Lihat arti, lalu pilih kata Jepangnya${bs('ri')}</small></button><button class="dbtn" data-m="kd"><b>Bentuk kamus</b><small>Kata kerja bentuk kamus (辞書形), pilih artinya${bs('kd')}</small></button><button class="dbtn" data-m="uj"><b>Ujian</b><small>Campuran dua arah, tanpa furigana${bs('uj')}</small></button><button class="dbtn gk" id="gk"><b>Ganti kategori</b></button></div>`;
+$.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>start('all',null,b.dataset.m));
+$.querySelector('#gk').onclick=()=>dayMenu(day);
+}
+
+function pool(c,dks,dict){const o=[];(dks||[day]).forEach(dk=>{for(const k in DAYS[dk])if(c==='all'||c===k)DAYS[dk][k].split(';').forEach(w=>{const p=w.split('|');o.push({jp:k==='kk'&&!dict?masu(p[0]):p[0],id:p[1],rev:false,cat:k})})});return o}
+
+function start(c,items,mode){
+const kd=mode==='kd',list=shuf(items||pool(kd?'kk':c,null,kd));
+S={c,mode,list,i:0,ok:0,bad:[],done:false,src:pool(kd?'kk':c,null,kd),all:pool('all',keys)};
+ask();
+}
+
+function ask(){
+const q=S.list[S.i],rev=S.mode==='uj'?Math.random()<.5:S.mode?S.mode==='ri':q.rev;
+const src=S.mode?S.src:S.c==='all'?S.all.filter(x=>x.rev===rev):S.src;
+const key=rev?'jp':'id';
+let d=shuf(src.filter(x=>x[key]!==q[key])).slice(0,3);
+if(d.length<3)d=d.concat(shuf(S.all.filter(x=>(S.mode||x.rev===rev)&&x[key]!==q[key]&&!d.includes(x))).slice(0,3-d.length));
+S.opts=shuf([q].concat(d));S.q=q;S.rev=rev;S.done=false;
+const p=Math.round(S.i/S.list.length*100);
+$.innerHTML=`<div class="top"><button class="back" aria-label="Kembali" id="bk">${ARROW}</button><div class="bar"><i style="width:${p}%"></i></div><span class="cnt">${S.i+1}/${S.list.length}</span></div>
+<div class="q"><div class="lab">${rev?'Apa bahasa Jepangnya?':'Apa artinya?'}</div><div class="w ${rev?'id':''}">${rev?q.id:F(q.jp)}</div></div>
+<div class="opts">${S.opts.map((o,n)=>`<button class="opt ${rev?'jp':''}" data-n="${n}"><span class="n">${n+1}</span><span>${rev?F(o.jp):o.id}</span></button>`).join('')}</div>
+<div class="fb" id="fb" aria-live="polite"></div><button class="go" id="go">${S.i+1===S.list.length?'Lihat hasil':'Lanjut'}</button>`;
+$.querySelector('#bk').onclick=()=>S.mode?modeMenu():dayMenu(day);
+$.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b.dataset.n));
+$.querySelector('#go').onclick=next;
+}
+
+function pick(n){
+if(S.done)return;S.done=true;
+const q=S.q,c=S.opts[n]===q,btns=$.querySelectorAll('.opt');
+btns.forEach((b,k)=>{b.disabled=true;if(S.opts[k]===q)b.classList.add('ok');else if(k===n)b.classList.add('bad')});
+if(c)S.ok++;else S.bad.push(q);
+const fb=$.querySelector('#fb');fb.className='fb '+(c?'ok':'bad');
+fb.innerHTML=c?'Jawaban Anda benar.':`Jawaban kurang tepat. Jawaban yang benar: ${S.rev?F(q.jp):q.id}`;
+$.querySelector('#go').classList.add('on');
+$.querySelector('#go').focus({preventScroll:true});
+}
+
+function next(){if(!S.done)return;S.i++;S.i<S.list.length?ask():result()}
+
+function result(){
+const t=S.list.length,pc=S.ok/t;
+const bk=day+':'+S.c+(S.mode?':'+S.mode:'');if(!S.retry&&(best[bk]==null||S.ok>best[bk])){best[bk]=S.ok;save()}
+if(!S.retry)saveScore(day,S.ok,t);
+const msg=pc===1?'Sempurna. Semua jawaban Anda benar.':pc>=.8?'Sangat baik. Sedikit lagi sempurna.':pc>=.5?'Cukup baik. Ulangi kata yang salah agar lebih mudah diingat.':'Jangan berkecil hati. Silakan ulangi secara perlahan.';
+$.innerHTML=`<div class="score"><div class="big">${S.ok}<span>/${t}</span></div><p>${msg}</p></div>
+${S.bad.length?`<div class="wrong"><h2>Kata yang perlu diulang</h2>${S.bad.map(w=>`<div class="row"><span class="j">${F(w.jp)}</span><span>${w.id}</span></div>`).join('')}</div>`:''}
+<div class="btns">${S.bad.length?'<button class="pri" id="rw">Ulangi kata yang salah</button>':''}<button class="${S.bad.length?'sec':'pri'}" id="ra">Ulangi kuis</button><button class="sec" id="hm">Kembali ke menu</button></div>`;
+const c=S.c,bad=S.bad.slice(),md=S.mode;
+const rw=$.querySelector('#rw');if(rw)rw.onclick=()=>{start(c,bad,md);S.retry=1};
+$.querySelector('#ra').onclick=()=>start(c,null,md);
+$.querySelector('#hm').onclick=()=>S.mode?modeMenu():dayMenu(day);
+}
+
+
+const HY={"2026-09-29":[{"d":[["A","お元気{げんき}ですか。"],["B","はい、＿＿＿元気{げんき}です。"]],"k":"おかげさまで","w":["すみません","いただきます"],"m":"berkat Anda (menjawab sapaan)","t":"A: Apa kabar?|B: Ya, berkat Anda, saya sehat.","e":"おかげさまで dipakai untuk menjawab sapaan seperti \"Apa kabar?\" sambil berterima kasih atas perhatian atau bantuan orang lain. すみません berarti maaf / permisi, sedangkan いただきます diucapkan sebelum makan."},{"d":[["A","田中{たなか}さん、＿＿＿。"],["B","はい、何{なん}ですか。"]],"k":"ちょっといいですか","w":["ただいま","おめでとうございます"],"m":"boleh minta waktu sebentar?","t":"A: Tanaka-san, boleh minta waktu sebentar?|B: Ya, ada apa?","e":"ちょっといいですか dipakai untuk membuka pembicaraan sambil menanyakan apakah lawan bicara punya waktu. ただいま diucapkan saat tiba di rumah, dan おめでとうございます untuk memberi selamat."},{"d":[["A","＿＿＿、いっしょに食{た}べませんか。"],["B","いいですね。ありがとうございます。"]],"k":"よかったら","w":["もしもし","ごめんください"],"m":"kalau berkenan","t":"A: Kalau berkenan, bagaimana kalau kita makan bersama?|B: Boleh sekali. Terima kasih.","e":"よかったら berarti \"kalau Anda berkenan / kalau tidak keberatan\", dipakai untuk mengajak atau menawarkan sesuatu dengan sopan. もしもし dipakai saat menelepon, dan ごめんください saat bertamu."},{"d":[["A","（食事{しょくじ}のあとで）＿＿＿。おいしかったです。"],["B","いいえ。"]],"k":"ごちそうさまでした","w":["いただきます","ただいま"],"m":"terima kasih atas makanannya","t":"A: (Setelah makan) Terima kasih atas makanannya. Enak sekali.|B: Sama-sama.","e":"ごちそうさまでした diucapkan setelah selesai makan sebagai terima kasih atas hidangan, termasuk saat ditraktir. いただきます diucapkan sebelum makan."},{"d":[["A","山田{やまだ}です。いつも＿＿＿。"],["B","こちらこそ、よろしくお願{ねが}いします。"]],"k":"お世話{せわ}になっています","w":["お待{ま}たせしました","お大事{だいじ}に"],"m":"terima kasih atas bantuan selama ini","t":"A: Saya Yamada. Terima kasih atas bantuan Anda selama ini.|B: Saya juga. Mohon kerja samanya.","e":"お世話になっています dipakai untuk berterima kasih atas bantuan atau hubungan baik yang sudah berjalan, terutama dalam telepon atau surel kerja. お世話になります dipakai saat akan mulai dibantu, misalnya ketika pertama kali berurusan."}],"2026-09-30":[{"d":[["A","すみません、＿＿＿。"],["B","いいえ、だいじょうぶです。"]],"k":"お待{ま}たせしました","w":["お大事{だいじ}に","ごちそうさまでした"],"m":"maaf membuat Anda menunggu","t":"A: Maaf, sudah membuat Anda menunggu.|B: Tidak apa-apa.","e":"お待たせしました diucapkan setelah membuat orang lain menunggu, sebagai permintaan maaf yang halus. お大事に hanya untuk orang yang sedang sakit."},{"d":[["A","熱{ねつ}があるので、きょうは休{やす}みます。"],["B","そうですか。＿＿＿。"]],"k":"お大事{だいじ}に","w":["おかげさまで","よかったら"],"m":"semoga lekas sembuh","t":"A: Saya demam, jadi hari ini saya izin beristirahat.|B: Begitu, ya. Semoga lekas sembuh.","e":"お大事に berarti \"semoga lekas sembuh\", diucapkan kepada orang yang sakit atau tidak enak badan. おかげさまで adalah jawaban atas sapaan, dan よかったら dipakai untuk mengajak."},{"d":[["A","＿＿＿。"],["B","いってらっしゃい。気{き}をつけて。"]],"k":"いってきます","w":["ただいま","いただきます"],"m":"saya berangkat dulu","t":"A: Saya berangkat dulu.|B: Silakan berangkat. Hati-hati di jalan.","e":"いってきます diucapkan oleh orang yang berangkat dari rumah atau kantor, dan dijawab いってらっしゃい. ただいま diucapkan saat pulang."},{"d":[["A","（ドアの前{まえ}で）＿＿＿。"],["B","どうぞ、入{はい}ってください。"]],"k":"失礼{しつれい}します","w":["ただいま","いってきます"],"m":"permisi","t":"A: (Di depan pintu) Permisi.|B: Silakan masuk.","e":"失礼します berarti \"permisi\", dipakai saat masuk ruangan, memulai atau mengakhiri pembicaraan dengan sopan, maupun saat berpamitan."},{"d":[["A","今日{きょう}はこれで終{お}わりです。お先{さき}に失礼{しつれい}します。"],["B","＿＿＿。"]],"k":"お疲{つか}れさまでした","w":["いらっしゃいませ","おめでとうございます"],"m":"terima kasih atas kerja kerasnya","t":"A: Hari ini pekerjaan sudah selesai. Saya pamit duluan.|B: Terima kasih atas kerja kerasnya.","e":"お疲れさまでした diucapkan kepada rekan kerja setelah pekerjaan selesai untuk menghargai kerja kerasnya. いらっしゃいませ dipakai pegawai toko untuk menyambut pelanggan."}],"2026-10-01":[{"d":[["A","（ご飯{はん}の前{まえ}に）＿＿＿。"],["B","どうぞ、めしあがれ。"]],"k":"いただきます","w":["ごちそうさまでした","いってきます"],"m":"selamat makan","t":"A: (Sebelum makan) Selamat makan.|B: Silakan, dimakan.","e":"いただきます diucapkan sebelum makan untuk menghargai hidangan dan orang yang menyiapkannya. ごちそうさまでした diucapkan setelah selesai makan."},{"d":[["A","＿＿＿。"],["B","おかえりなさい。"]],"k":"ただいま","w":["いってきます","失礼{しつれい}します"],"m":"saya sudah pulang","t":"A: Saya pulang.|B: Selamat datang kembali.","e":"ただいま diucapkan saat tiba di rumah, dan dijawab おかえりなさい. いってきます dipakai saat berangkat."},{"d":[["A","ただいま。"],["B","＿＿＿。今日{きょう}はどうでしたか。"]],"k":"おかえりなさい","w":["いってらっしゃい","いらっしゃいませ"],"m":"selamat datang kembali","t":"A: Saya pulang.|B: Selamat datang kembali. Bagaimana hari ini?","e":"おかえりなさい adalah jawaban untuk ただいま. いってらっしゃい dipakai untuk melepas orang yang berangkat, dan いらっしゃいませ untuk menyambut pelanggan di toko."},{"d":[["A","いってきます。"],["B","＿＿＿。気{き}をつけて。"]],"k":"いってらっしゃい","w":["おかえりなさい","おやすみなさい"],"m":"silakan berangkat","t":"A: Saya berangkat dulu.|B: Silakan berangkat. Hati-hati.","e":"いってらっしゃい adalah jawaban untuk いってきます, diucapkan kepada orang yang berangkat. おかえりなさい dipakai saat orang pulang."},{"d":[["A","＿＿＿。マリアです。"],["B","はじめまして。田中{たなか}です。"]],"k":"はじめまして","w":["お久{ひさ}しぶりです","おやすみなさい"],"m":"senang berkenalan (pertama kali bertemu)","t":"A: Perkenalkan, saya Maria.|B: Salam kenal. Saya Tanaka.","e":"はじめまして diucapkan saat bertemu seseorang untuk pertama kali. お久しぶりです dipakai untuk orang yang lama tidak bertemu."}],"2026-10-02":[{"d":[["A","マリアです。＿＿＿。"],["B","こちらこそ、よろしくお願{ねが}いします。"]],"k":"よろしくお願{ねが}いします","w":["ごちそうさまでした","いってきます"],"m":"mohon bantuan / mohon kerja samanya","t":"A: Saya Maria. Mohon kerja samanya.|B: Saya juga. Mohon kerja samanya.","e":"よろしくお願いします dipakai setelah memperkenalkan diri, atau saat meminta seseorang mengurus sesuatu. Balasannya biasanya こちらこそ."},{"d":[["A","あ、田中{たなか}さん。＿＿＿。"],["B","あ、マリアさん。元気{げんき}でしたか。"]],"k":"お久{ひさ}しぶりです","w":["はじめまして","ただいま"],"m":"sudah lama tidak bertemu","t":"A: Oh, Tanaka-san. Sudah lama tidak bertemu.|B: Oh, Maria-san. Apakah Anda sehat?","e":"お久しぶりです dipakai kepada orang yang sudah lama tidak ditemui. はじめまして hanya untuk pertemuan pertama."},{"d":[["A","来月{らいげつ}、結婚{けっこん}します。"],["B","＿＿＿。"]],"k":"おめでとうございます","w":["お待{ま}たせしました","いってきます"],"m":"selamat","t":"A: Bulan depan saya akan menikah.|B: Selamat!","e":"おめでとうございます dipakai untuk memberi selamat atas kabar baik, seperti pernikahan, kelulusan, atau ulang tahun."},{"d":[["A","手伝{てつだ}ってくれて、ありがとうございました。"],["B","＿＿＿。"]],"k":"どういたしまして","w":["いただきます","はじめまして"],"m":"sama-sama","t":"A: Terima kasih sudah membantu.|B: Sama-sama.","e":"どういたしまして adalah jawaban untuk ucapan terima kasih."},{"d":[["A","そろそろ寝{ね}ます。＿＿＿。"],["B","おやすみなさい。"]],"k":"おやすみなさい","w":["おはようございます","ただいま"],"m":"selamat tidur","t":"A: Saya mau tidur sekarang. Selamat malam.|B: Selamat tidur.","e":"おやすみなさい diucapkan sebelum tidur atau saat berpisah di malam hari. おはようございます adalah sapaan pagi."}],"2026-10-03":[{"d":[["A","＿＿＿、駅{えき}はどこですか。"],["B","あの信号{しんごう}の先{さき}です。"]],"k":"すみません","w":["ごちそうさまでした","どういたしまして"],"m":"permisi / maaf","t":"A: Permisi, di mana stasiunnya?|B: Setelah lampu lalu lintas itu.","e":"すみません dipakai untuk memanggil orang, meminta maaf, dan berterima kasih. Di sini dipakai untuk menyapa sebelum bertanya."},{"d":[["A","＿＿＿。遅{おく}れました。"],["B","大丈夫{だいじょうぶ}ですよ。"]],"k":"ごめんなさい","w":["どういたしまして","おめでとうございます"],"m":"maaf","t":"A: Maaf. Saya terlambat.|B: Tidak apa-apa.","e":"ごめんなさい dipakai untuk meminta maaf, terutama kepada teman atau orang dekat. どういたしまして adalah jawaban atas terima kasih."},{"d":[["A","＿＿＿。顔色{かおいろ}が悪{わる}いですよ。"],["B","ちょっと頭{あたま}が痛{いた}いです。"]],"k":"大丈夫{だいじょうぶ}ですか","w":["いただきます","おやすみなさい"],"m":"apakah Anda baik-baik saja?","t":"A: Apakah Anda baik-baik saja? Wajah Anda pucat.|B: Kepala saya agak sakit.","e":"大丈夫ですか dipakai untuk menanyakan keadaan orang yang tampak tidak sehat atau mengalami kesulitan."},{"d":[["A","雨{あめ}ですね。"],["B","＿＿＿。"]],"k":"気{き}をつけて","w":["いただきます","はじめまして"],"m":"hati-hati","t":"A: Hujan, ya.|B: Hati-hati.","e":"気をつけて diucapkan kepada orang yang akan pergi, agar berhati-hati di jalan."},{"d":[["A","（ドアの前{まえ}で）＿＿＿。"],["B","ありがとうございます。"]],"k":"お先{さき}にどうぞ","w":["お先{さき}に失礼{しつれい}します","ただいま"],"m":"silakan Anda duluan","t":"A: (Di depan pintu) Silakan Anda duluan.|B: Terima kasih.","e":"お先にどうぞ dipakai untuk mempersilakan orang lain lebih dulu. お先に失礼します justru dipakai oleh orang yang pulang lebih dulu."}],"2026-10-04":[{"d":[["A","いらっしゃいませ。"],["B","＿＿＿。"]],"k":"これをください","w":["おかえりなさい","いってきます"],"m":"tolong beri saya yang ini","t":"A: Selamat datang.|B: Tolong beri saya yang ini.","e":"これをください dipakai saat membeli atau memesan sambil menunjuk barang."},{"d":[["A","＿＿＿。"],["B","三百円{さんびゃくえん}です。"]],"k":"これはいくらですか","w":["これはどこですか","これはだれですか"],"m":"berapa harga ini?","t":"A: Berapa harga ini?|B: Tiga ratus yen.","e":"いくらですか dipakai untuk menanyakan harga. どこですか menanyakan tempat dan だれですか menanyakan orang."},{"d":[["A","すみません、＿＿＿。"],["B","はい、大丈夫{だいじょうぶ}です。"]],"k":"カードで払{はら}えますか","w":["駅{えき}はどこですか","今何時{いまなんじ}ですか"],"m":"bisakah membayar dengan kartu?","t":"A: Permisi, bisakah membayar dengan kartu?|B: Ya, bisa.","e":"カードで払えますか dipakai di kasir untuk menanyakan apakah pembayaran dengan kartu diterima."},{"d":[["A","袋{ふくろ}はいりますか。"],["B","いいえ、＿＿＿。"]],"k":"けっこうです","w":["いってきます","おめでとうございます"],"m":"tidak usah, terima kasih","t":"A: Apakah Anda memerlukan kantong?|B: Tidak, terima kasih.","e":"けっこうです dipakai untuk menolak dengan sopan. Hati-hati, tergantung konteks bisa juga berarti \"cukup\" atau \"baik\"."},{"d":[["A","領収書{りょうしゅうしょ}を＿＿＿。"],["B","はい、お名前{なまえ}は？"]],"k":"お願{ねが}いします","w":["ごちそうさまでした","ただいま"],"m":"tolong / mohon","t":"A: Tolong kuitansinya.|B: Baik, atas nama siapa?","e":"お願いします dipakai untuk meminta sesuatu dengan sopan setelah menyebut barang yang diminta."}],"2026-10-05":[{"d":[["A","すみません、トイレは＿＿＿。"],["B","あそこです。"]],"k":"どこですか","w":["いくらですか","だれですか"],"m":"di mana?","t":"A: Permisi, toiletnya di mana?|B: Di sana.","e":"〜はどこですか dipakai untuk menanyakan lokasi. いくらですか menanyakan harga."},{"d":[["A","駅{えき}はどう行{い}きますか。"],["B","＿＿＿行{い}って、右{みぎ}に曲{ま}がってください。"]],"k":"まっすぐ","w":["ゆっくり","たくさん"],"m":"lurus","t":"A: Bagaimana cara ke stasiun?|B: Jalan lurus, lalu belok kanan.","e":"まっすぐ行ってください berarti \"silakan jalan lurus\", dipakai saat menunjukkan jalan."},{"d":[["A","＿＿＿。"],["B","いいえ、まだ始{はじ}まっていません。"]],"k":"遅{おく}れてすみません","w":["ただいま","おやすみなさい"],"m":"maaf saya terlambat","t":"A: Maaf saya terlambat.|B: Tidak apa-apa, belum dimulai.","e":"遅れてすみません dipakai untuk meminta maaf karena datang terlambat."},{"d":[["A","駅{えき}は右{みぎ}です。"],["B","すみません、＿＿＿。"]],"k":"もう一度{いちど}お願{ねが}いします","w":["ごちそうさまでした","お先{さき}にどうぞ"],"m":"tolong ulangi sekali lagi","t":"A: Stasiunnya di sebelah kanan.|B: Maaf, tolong ulangi sekali lagi.","e":"もう一度お願いします dipakai untuk meminta lawan bicara mengulang perkataannya."},{"d":[["A","これは日本語{にほんご}で何{なん}ですか。"],["B","すみません、＿＿＿。"]],"k":"わかりません","w":["いただきます","いってきます"],"m":"saya tidak tahu / tidak mengerti","t":"A: Ini dalam bahasa Jepang apa?|B: Maaf, saya tidak tahu.","e":"わかりません dipakai untuk menyatakan bahwa kita tidak tahu atau tidak mengerti."}],"2026-10-06":[{"d":[["A","すみません、もっと＿＿＿話{はな}してください。"],["B","はい、わかりました。"]],"k":"ゆっくり","w":["たくさん","すぐ"],"m":"pelan-pelan","t":"A: Maaf, tolong bicara lebih pelan.|B: Baik, mengerti.","e":"ゆっくり話してください dipakai untuk meminta lawan bicara berbicara lebih pelan agar mudah dipahami."},{"d":[["A","すみません、駅{えき}の行{い}き方{かた}を＿＿＿。"],["B","いいですよ。"]],"k":"教{おし}えてください","w":["失礼{しつれい}します","いってきます"],"m":"tolong beri tahu saya","t":"A: Maaf, tolong beri tahu saya cara ke stasiun.|B: Baik.","e":"教えてください dipakai untuk meminta informasi atau penjelasan."},{"d":[["A","行{い}きましょう。"],["B","すみません、＿＿＿。かばんを取{と}ってきます。"]],"k":"ちょっと待{ま}ってください","w":["ごちそうさまでした","おかえりなさい"],"m":"tolong tunggu sebentar","t":"A: Ayo berangkat.|B: Maaf, tolong tunggu sebentar. Saya mengambil tas dulu.","e":"ちょっと待ってください dipakai untuk meminta orang menunggu sebentar."},{"d":[["A","すみません、山田{やまだ}さんはいますか。"],["B","はい、＿＿＿。"]],"k":"少々{しょうしょう}お待{ま}ちください","w":["お大事{だいじ}に","いってらっしゃい"],"m":"mohon tunggu sebentar","t":"A: Permisi, apakah Yamada-san ada?|B: Ya, mohon tunggu sebentar.","e":"少々お待ちください adalah bentuk sopan dari \"tunggu sebentar\", sering dipakai pegawai kepada tamu atau penelepon."},{"d":[["A","あの、＿＿＿があるんですが、いいですか。"],["B","はい、何{なん}ですか。"]],"k":"お願{ねが}い","w":["ごちそう","おかげ"],"m":"permintaan","t":"A: Maaf, saya punya satu permintaan, boleh?|B: Ya, apa itu?","e":"お願いがあるんですが dipakai untuk membuka pembicaraan saat ingin meminta tolong."}],"2026-10-07":[{"d":[["A","ここで写真{しゃしん}を撮{と}っ＿＿＿。"],["B","はい、どうぞ。"]],"k":"てもいいですか","w":["てはいけません","ませんでした"],"m":"bolehkah (melakukan)…?","t":"A: Bolehkah saya memotret di sini?|B: Ya, silakan.","e":"〜てもいいですか dipakai untuk meminta izin. 〜てはいけません berarti larangan."},{"d":[["A","ここで食{た}べ＿＿＿。"],["B","あ、すみません。"]],"k":"ないでください","w":["てもいいですか","ましょう"],"m":"tolong jangan (melakukan)…","t":"A: Tolong jangan makan di sini.|B: Oh, maaf.","e":"〜ないでください dipakai untuk meminta orang tidak melakukan sesuatu."},{"d":[["A","週末{しゅうまつ}、何{なに}がしたいですか。"],["B","温泉{おんせん}に行{い}き＿＿＿。"]],"k":"たいです","w":["ませんでした","ないでください"],"m":"ingin (melakukan)…","t":"A: Akhir pekan ini Anda ingin apa?|B: Saya ingin pergi ke pemandian air panas.","e":"〜たいです dipakai untuk menyatakan keinginan sendiri."},{"d":[["A","いっしょに映画{えいが}を見{み}＿＿＿。"],["B","いいですね。行{い}きましょう。"]],"k":"ませんか","w":["ませんでした","てもいいですか"],"m":"maukah (kita)…?","t":"A: Maukah kita menonton film bersama?|B: Boleh. Ayo pergi.","e":"〜ませんか dipakai untuk mengajak seseorang dengan sopan."},{"d":[["A","疲{つか}れましたね。ちょっと休{やす}み＿＿＿。"],["B","そうですね。"]],"k":"ましょう","w":["ませんでした","ないでください"],"m":"mari (kita)…","t":"A: Lelah, ya. Mari kita istirahat sebentar.|B: Benar.","e":"〜ましょう dipakai untuk mengajak atau mengusulkan sesuatu bersama."}],"2026-10-08":[{"d":[["A","今日{きょう}は用事{ようじ}があるので、＿＿＿。"],["B","お疲{つか}れさまでした。"]],"k":"お先{さき}に失礼{しつれい}します","w":["いってきます","ただいま"],"m":"saya pamit duluan","t":"A: Hari ini saya ada urusan, jadi saya pamit duluan.|B: Terima kasih atas kerja kerasnya.","e":"お先に失礼します diucapkan saat pulang lebih dulu dari rekan kerja."},{"d":[["A","荷物{にもつ}を持{も}ちましょうか。"],["B","ありがとうございます。＿＿＿。"]],"k":"助{たす}かりました","w":["いただきます","失礼{しつれい}します"],"m":"sangat terbantu","t":"A: Perlu saya bawakan barangnya?|B: Terima kasih. Saya sangat terbantu.","e":"助かりました dipakai untuk berterima kasih ketika bantuan sangat berguna."},{"d":[["A","荷物{にもつ}、＿＿＿。"],["B","ありがとうございます。お願{ねが}いします。"]],"k":"手伝{てつだ}いましょうか","w":["お待{ま}たせしました","おめでとうございます"],"m":"perlu saya bantu?","t":"A: Perlu saya bantu dengan barangnya?|B: Terima kasih. Tolong ya.","e":"〜ましょうか dipakai untuk menawarkan bantuan."},{"d":[["A","コーヒーもどうぞ。"],["B","いいんですか。"],["A","はい、＿＿＿。"]],"k":"ご遠慮{えんりょ}なく","w":["いただきます","ごめんなさい"],"m":"jangan sungkan","t":"A: Silakan kopinya juga.|B: Boleh, ya?|A: Ya, jangan sungkan.","e":"ご遠慮なく dipakai untuk mempersilakan orang agar tidak sungkan."},{"d":[["A","来週{らいしゅう}のパーティー、＿＿＿。"],["B","私{わたし}もです。"]],"k":"楽{たの}しみにしています","w":["お大事{だいじ}に","いってきます"],"m":"saya menantikannya","t":"A: Saya menantikan pesta minggu depan.|B: Saya juga.","e":"楽しみにしています dipakai untuk menyatakan bahwa kita menantikan suatu acara."}],"2026-10-09":[{"d":[["A","＿＿＿、田中{たなか}です。"],["B","あ、田中{たなか}さん。こんにちは。"]],"k":"もしもし","w":["ごめんください","ただいま"],"m":"halo (di telepon)","t":"A: Halo, ini Tanaka.|B: Oh, Tanaka-san. Selamat siang.","e":"もしもし dipakai untuk membuka pembicaraan di telepon. ごめんください dipakai saat bertamu."},{"d":[["A","今{いま}、＿＿＿。"],["B","はい、大丈夫{だいじょうぶ}です。"]],"k":"電話{でんわ}してもいいですか","w":["写真{しゃしん}を撮{と}ってもいいですか","食{た}べてもいいですか"],"m":"bolehkah saya menelepon sekarang?","t":"A: Bolehkah saya menelepon sekarang?|B: Ya, boleh.","e":"電話してもいいですか dipakai untuk memastikan lawan bicara sedang bisa menerima telepon."},{"d":[["A","今{いま}、会議中{かいぎちゅう}なので…。"],["B","では、＿＿＿。"]],"k":"あとでかけ直{なお}します","w":["お先{さき}に失礼{しつれい}します","いただきます"],"m":"saya akan menelepon lagi nanti","t":"A: Sekarang saya sedang rapat...|B: Kalau begitu, saya akan menelepon lagi nanti.","e":"かけ直します berarti \"menelepon ulang\", dipakai saat lawan bicara sedang sibuk."},{"d":[["A","山田{やまだ}は今{いま}いません。"],["B","では、＿＿＿。"]],"k":"伝言{でんごん}をお願{ねが}いします","w":["ごちそうさまでした","おやすみなさい"],"m":"tolong sampaikan pesan","t":"A: Yamada sedang tidak ada.|B: Kalau begitu, tolong sampaikan pesan.","e":"伝言をお願いします dipakai saat ingin menitipkan pesan lewat telepon."},{"d":[["A","もしもし。よく＿＿＿。"],["B","あ、すみません。もう少{すこ}し大{おお}きい声{こえ}で話{はな}します。"]],"k":"聞{き}こえません","w":["いただきます","おかえりなさい"],"m":"tidak terdengar","t":"A: Halo. Suara Anda tidak terdengar jelas.|B: Oh, maaf. Saya akan bicara lebih keras.","e":"聞こえません dipakai saat suara lawan bicara tidak terdengar jelas."}],"2026-10-10":[{"d":[["A","＿＿＿。"],["B","昨日{きのう}から頭{あたま}が痛{いた}いんです。"]],"k":"どうしましたか","w":["いくらですか","いってきます"],"m":"ada apa? / apa keluhannya?","t":"A: Ada apa?|B: Sejak kemarin kepala saya sakit.","e":"どうしましたか dipakai dokter atau orang lain untuk menanyakan keluhan atau masalah."},{"d":[["A","今日{きょう}は休{やす}みます。＿＿＿。"],["B","そうですか。お大事{だいじ}に。"]],"k":"熱{ねつ}があります","w":["お待{ま}たせしました","いただきます"],"m":"saya demam","t":"A: Hari ini saya izin. Saya demam.|B: Begitu. Semoga lekas sembuh.","e":"熱があります berarti \"saya demam\", dipakai untuk menjelaskan kondisi tubuh."},{"d":[["A","一日{いちにち}三回{さんかい}、＿＿＿。"],["B","はい、わかりました。"]],"k":"薬{くすり}を飲{の}んでください","w":["写真{しゃしん}を撮{と}ってください","手伝{てつだ}ってください"],"m":"tolong minum obat","t":"A: Tiga kali sehari, tolong minum obatnya.|B: Baik, saya mengerti.","e":"薬を飲んでください adalah instruksi umum dari dokter atau apoteker."},{"d":[["A","風邪{かぜ}をひきました。"],["B","＿＿＿。"]],"k":"ゆっくり休{やす}んでください","w":["大{おお}きい声{こえ}で話{はな}してください","ここで写真{しゃしん}を撮{と}ってください"],"m":"tolong istirahat dengan cukup","t":"A: Saya terkena flu.|B: Tolong istirahat dengan cukup.","e":"ゆっくり休んでください dipakai untuk menyarankan seseorang yang sakit agar beristirahat."},{"d":[["A","＿＿＿。"],["B","二千円{にせんえん}です。"]],"k":"お会計{かいけい}をお願{ねが}いします","w":["道{みち}を教{おし}えてください","おやすみなさい"],"m":"tolong hitung tagihannya","t":"A: Tolong hitung tagihannya.|B: Dua ribu yen.","e":"お会計をお願いします dipakai di restoran atau toko untuk meminta tagihan."}]};
+const bl=(t,f)=>rb(t).replace('＿＿＿',f?`<b class="fill">${rb(f)}</b>`:'<span class="blank">＿＿＿</span>');
+const AV={l:['#4B3628','#F1D7B8'],r:['#2E2A2A','#EED3B6']};
+const avatar=x=>`<svg class="av" viewBox="0 0 100 115" aria-hidden="true"><path d="M0 115A50 46 0 0 1 100 115z" fill="#A5B4BE"/><circle cx="50" cy="36" r="30.5" fill="${AV[x][1]}"/><path d="M19.5 36C19 12 33 0 50 0s31 12 30.5 36C74 26 63 20 50 20s-24 6-30.5 16z" fill="${AV[x][0]}"/></svg>`;
+const dlg=(q,f)=>q.d.map(l=>{const x=l[0]==='A'?'l':'r';return `<div class="dr s${x}">${avatar(x)}<div class="bub">${bl(l[1],f)}</div></div>`}).join('');
+function hyStart(items){S={hy:1,list:shuf(items||HY[day]),i:0,ok:0,bad:[],done:false};hyAsk()}
+function hyAsk(){
+const q=S.list[S.i];S.q=q;S.opts=shuf([q.k].concat(q.w));S.done=false;
+const p=Math.round(S.i/S.list.length*100);
+$.innerHTML=`<div class="top"><button class="back" aria-label="Kembali" id="bk">${ARROW}</button><div class="bar"><i style="width:${p}%"></i></div><span class="cnt">${S.i+1}/${S.list.length}</span></div>
+<div class="q hyq"><div class="lab">Lengkapi percakapan berikut.</div><div class="dlg" id="dl">${dlg(q)}</div></div>
+<div class="opts">${S.opts.map((o,n)=>`<button class="opt jp hj" data-n="${n}"><span class="n">${n+1}</span><span>${rb(o)}</span></button>`).join('')}</div>
+<div class="fb" id="fb" aria-live="polite"></div><div id="ex"></div><button class="go" id="go">${S.i+1===S.list.length?'Lihat hasil':'Lanjut'}</button>`;
+$.querySelector('#bk').onclick=()=>dayMenu(day);
+$.querySelectorAll('.opt').forEach(b=>b.onclick=()=>hyPick(+b.dataset.n));
+$.querySelector('#go').onclick=hyNext;
+}
+function hyPick(n){
+if(S.done||n>=S.opts.length)return;S.done=true;
+const q=S.q,c=S.opts[n]===q.k;
+$.querySelectorAll('.opt').forEach((b,k)=>{b.disabled=true;if(S.opts[k]===q.k)b.classList.add('ok');else if(k===n)b.classList.add('bad')});
+if(c)S.ok++;else S.bad.push(q);
+const fb=$.querySelector('#fb');fb.className='fb '+(c?'ok':'bad');
+fb.textContent=c?'Jawaban Anda benar.':'Jawaban kurang tepat.';
+$.querySelector('#dl').innerHTML=dlg(q,q.k);
+$.querySelector('#ex').innerHTML=`<div class="ex"><b>Kunci jawaban: ${rb(q.k)}</b><p>${q.t.split('|').join('<br>')}</p><p>${q.e}</p></div>`;
+const g=$.querySelector('#go');g.classList.add('on');g.focus({preventScroll:true});
+}
+function hyNext(){if(!S.done)return;S.i++;S.i<S.list.length?hyAsk():hyResult()}
+function hyResult(){
+const t=S.list.length,pc=S.ok/t,bk=day+':hy';
+if(!S.retry&&(best[bk]==null||S.ok>best[bk])){best[bk]=S.ok;save()}
+if(!S.retry)saveScore(day,S.ok,t);
+const msg=pc===1?'Sempurna. Semua jawaban Anda benar.':pc>=.8?'Sangat baik. Sedikit lagi sempurna.':pc>=.5?'Cukup baik. Ulangi ungkapan yang salah agar lebih mudah diingat.':'Jangan berkecil hati. Silakan ulangi secara perlahan.';
+$.innerHTML=`<div class="score"><div class="big">${S.ok}<span>/${t}</span></div><p>${msg}</p></div>
+${S.bad.length?`<div class="wrong"><h2>Ungkapan yang perlu diulang</h2>${S.bad.map(w=>`<div class="row"><span class="j">${rb(w.k)}</span><span>${w.m}</span></div>`).join('')}</div>`:''}
+<div class="btns">${S.bad.length?'<button class="pri" id="rw">Ulangi ungkapan yang salah</button>':''}<button class="${S.bad.length?'sec':'pri'}" id="ra">Ulangi kuis</button><button class="sec" id="hm">Kembali ke menu</button></div>`;
+const bad=S.bad.slice();
+const rw=$.querySelector('#rw');if(rw)rw.onclick=()=>{hyStart(bad);S.retry=1};
+$.querySelector('#ra').onclick=()=>hyStart();
+$.querySelector('#hm').onclick=()=>dayMenu(day);
+}
+
+document.addEventListener('keydown',e=>{
+if(!S||!S.q)return;
+if(e.key>='1'&&e.key<='4'&&!S.done&&$.querySelector('.opt')){(S.hy?hyPick:pick)(+e.key-1)}
+else if(e.key==='Enter'&&S.done&&$.querySelector('#go')){e.preventDefault();(S.hy?hyNext:next)()}
+});
+if(!FB_OK){$.innerHTML='<h1>言葉クイズ</h1><div class="dcard"><b>Firebase belum dikonfigurasi.</b><p class="sub" style="margin:8px 0 0">Isi <code>firebaseConfig</code> di dalam kode (cari teks "ISI_API_KEY"), lalu muat ulang halaman.</p></div>'}
+else auth.onAuthStateChanged(u=>u?home():authScreen());
+</script>
+</body>
+</html>
